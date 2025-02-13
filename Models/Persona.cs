@@ -10,22 +10,20 @@ namespace Hospital.Models
     {
         private string _nombre;
         private int _edad;
-        private string _dni;
 
         public string Nombre { get => _nombre; set => _nombre = value; }
         public int Edad { get => _edad; set => _edad = value; }
-        public string Dni { get => _dni; set => _dni = value; }
 
-        public Persona(string nombre, int edad, string dni)
+        public Persona(string nombre, int edad)
         {
             Nombre = nombre;
             Edad = edad;
-            Dni = dni;
+
         }
 
         public override string ToString()
         {
-            return $"Nombre: {Nombre} | edad: {Edad} | Dni: {Dni}";
+            return $"Nombre: {Nombre} | edad: {Edad}";
         }
 
     }

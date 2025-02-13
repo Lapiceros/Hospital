@@ -10,8 +10,8 @@ namespace Hospital.Models
     internal class Centro
     {
         public string nombreHospital { get; set; }
-        public List<Persona> _personas = new List<Persona>();
-        public List<Medico> _medicos = new List<Medico>();
+        public List<Persona> Personas = new List<Persona>();
+        public List<Medico> Medicos = new List<Medico>();
 
 
         public Centro(string nombre) 
@@ -20,10 +20,27 @@ namespace Hospital.Models
         }
         public void ListarPersonas()
         {
-            foreach (Persona persona in _personas)
+            foreach (Persona persona in Personas)
             {
-                Console.WriteLine($"- {persona.Nombre} | Dni: {persona.Dni} | Tipo: {persona.GetType().Name}");
+                Console.WriteLine($"- {persona.Nombre} | Tipo: {persona.GetType().Name}");
             }
+        }
+        public void ListarMedicos()
+        {
+            foreach (Medico medico in Medicos)
+            {
+                Console.WriteLine($"- {medico.ToString()}");
+            }
+        }
+        public void ListarPacientes()
+        {
+            Console.Write("Nombre del médico: ");
+            string nombreM2 = Console.ReadLine();
+            Medico medico2 = Medicos.Find(m => m.Nombre == nombreM2);
+            if (medico2 != null)
+                medico2.ListarPacientes();
+            else
+                Console.WriteLine("Médico no encontrado.");
         }
 
         public void CrearMedico()
@@ -36,15 +53,14 @@ namespace Hospital.Models
             Console.Write("Edad: ");
             int edad = int.Parse(Console.ReadLine());
 
-            string dni = "1091387U";
 
             Console.Write("Especialidad: ");
             string especialidad = Console.ReadLine();
 
-            Medico medico = new Medico(nombre, edad, dni,especialidad);
+            Medico medico = new Medico(nombre, edad,especialidad);
 
-            _personas.Add(medico);
-            _medicos.Add(medico);
+            Personas.Add(medico);
+            Medicos.Add(medico);
 
             Console.Clear();
             Console.WriteLine($"{medico.ToString()}\n creado correctamente");
@@ -53,24 +69,32 @@ namespace Hospital.Models
 
         public void NuevoPaciente()
         {
-            Console.WriteLine("Introduce los datos del Nuevo paciente:");
-
-            Console.Write("Nombre: ");
+            Console.Write("Nombre del médico asignado: ");
             string nombre = Console.ReadLine();
+            Medico medico = Medicos.Find(m => m.Nombre == nombre);
 
-            Console.Write("Edad: ");
-            int edad = int.Parse(Console.ReadLine());
+            if (medico != null)
+            {
+                Console.Write("Nombre del paciente: ");
+                string nombrePaciente = Console.ReadLine();
 
-            string dni = "1091387U";
+                Console.Write("Edad: ");
+                int edadPaciente = int.Parse(Console.ReadLine());
 
-            Random rnd = new Random();
-            Medico medicoAsignado = _medicos[rnd.Next(_medicos.Count())];
+                Console.Write("Enfermedad: ");
+                string enfermedad = Console.ReadLine();
 
-            Paciente paciente = new Paciente(nombre, edad, dni, medicoAsignado);
-            _personas.Add(paciente);
+                Paciente paciente = new Paciente(nombrePaciente, edadPaciente, enfermedad, medico);
 
-            Console.Clear();
-            Console.WriteLine($"{paciente.ToString()}\n creado correctamente");
+                Personas.Add(paciente);
+                medico.AsignarPaciente(paciente);
+
+                Console.Clear();
+                Console.WriteLine($"{paciente}\n creado correctamente");
+            }
+            else
+                Console.WriteLine("Médico no encontrado.");
+
         }
 
         public void CrearAdministrativo()
@@ -83,12 +107,10 @@ namespace Hospital.Models
             Console.Write("Edad: ");
             int edad = int.Parse(Console.ReadLine());
 
-            string dni = "1091387U";
-
             string puesto = Console.ReadLine();
 
-            PersonalAdministrativo admin = new PersonalAdministrativo(nombre, edad, dni, puesto);
-            _personas.Add(admin);
+            PersonalAdministrativo admin = new PersonalAdministrativo(nombre, edad, puesto);
+            Personas.Add(admin);
 
             Console.Clear();
             Console.WriteLine($"{admin.ToString()}\n creado correctamente");
@@ -97,34 +119,47 @@ namespace Hospital.Models
 
         public void EliminarMedico() 
         {
-            Console.WriteLine("Ingrese el dni del medico");
-            string dni = Console.ReadLine();
+            Console.WriteLine("Ingrese el nombre del medico");
+            string nombre = Console.ReadLine();
 
-            var medico = _personas.OfType<Medico>().FirstOrDefault(m => m.Dni == dni);
+            var medico = Personas.OfType<Medico>().FirstOrDefault(m => m.Nombre == nombre);
 
             if (medico != null)
             {
-                _personas.Remove(medico);
-                _medicos.Remove(medico);
+                ReasignarPacientes(medico);
+                Personas.Remove(medico);
+                Medicos.Remove(medico);
 
-                Console.WriteLine($"Medico {medico.Nombre} ha sido eliminado correctamente");
-
+                Console.WriteLine($"Dr/a {medico.Nombre} eliminado y pacientes reasignados.");
             }
             else
-                Console.WriteLine("No se ha encontrado un medico con ese DNI");
+                Console.WriteLine("No se ha encontrado un medico con ese nombre");
 
-            ReasignarPacientes(medico);
+        }
+        public void EliminarPaciente()
+        {
+            Console.Write("Nombre del médico: ");
+            string nombreMedico = Console.ReadLine();
+            Medico medico = Medicos.Find(m => m.Nombre == nombreMedico);
+            if (medico != null)
+            {
+                Console.Write("Nombre del paciente a eliminar: ");
+                string nombrePaciente = Console.ReadLine();
+                medico.EliminarPaciente(nombrePaciente);
+            }
+            else
+                Console.WriteLine("Médico no encontrado.");
         }
 
         public void ReasignarPacientes(Medico medico) 
         {
-            foreach (var item in medico.Pacientes)
+            Medico medicoReemplazo = Medicos.FirstOrDefault(m => m != medico && m.Especialidad == medico.Especialidad);
+
+            foreach (var paciente in medico.Pacientes.ToList())
             {
-                Random rnd = new Random();
-                Medico medicoAsignado = _medicos[rnd.Next(_medicos.Count())];
-                item.Medico = medicoAsignado;
-            
+                paciente.Medico = medicoReemplazo;
             }
+
         }
     }
 }

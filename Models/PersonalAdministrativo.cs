@@ -11,7 +11,7 @@ namespace Hospital.Models
         private string _puesto;
         public string Puesto { get => _puesto; set => _puesto = value; }
 
-        public PersonalAdministrativo(string nombre, int edad, string dni, string puesto):base(nombre,edad, dni)
+        public PersonalAdministrativo(string nombre, int edad, string puesto) : base(nombre, edad)
         {
             this._puesto = puesto;
         }

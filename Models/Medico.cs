@@ -8,32 +8,35 @@ namespace Hospital.Models
 {
     internal class Medico : Persona
     {
-        private string especialidad;
-        private List<Paciente> _pacientes = new List<Paciente>();
+        public string Especialidad { get; set; }
+        public List<Paciente> Pacientes { get; set; } = new List<Paciente>();
 
-        public List<Paciente> Pacientes { get { return _pacientes; } }
-
-        public Medico(string nombre,int edad, string dni, string especialidad): base(nombre, edad, dni)
+        public Medico(string nombre,int edad, string especialidad): base(nombre, edad)
         {
-            this.especialidad = especialidad;
+            this.Especialidad = especialidad;
           
         }
-        public void AsignarPacientes(Paciente paciente) 
+
+        public void AsignarPaciente(Paciente paciente)
         {
-            _pacientes.Add(paciente);
+            Pacientes.Add(paciente);
+        }
+        public void EliminarPaciente(string nombrePaciente)
+        {
+            Pacientes.RemoveAll(p => p.Nombre == nombrePaciente);
         }
 
         public void ListarPacientes()
         {
-            foreach (Paciente item in _pacientes)
+            foreach (Paciente item in Pacientes)
             {
-                Console.WriteLine($"-{item.Dni} |  Diagnostico: {item.Enfermedad}");
+                Console.WriteLine($"-{item.Nombre} |  Diagnostico: {item.Enfermedad}");
             };
         }
 
         public override string ToString()
         {
-            return $"{base.ToString()} | Tipo: {GetType().Name} | Especialidad: {especialidad}";
+            return $"Medico {base.ToString()} | Especialidad: {Especialidad}";
         }
 
 
