@@ -12,7 +12,7 @@ namespace Hospital.Models
         private Medico _medico;
 
         public string Enfermedad { get => _enfermedad; }
-        public Medico Medico { get => _medico;   set => _medico = value; }
+        public Medico Medico { get => _medico; set {  _medico?.Pacientes.Add(this); } }
 
         public Paciente(string nombre, int edad, string dni,Medico medico): base(nombre, edad, dni)
         {

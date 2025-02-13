@@ -53,7 +53,7 @@ namespace Hospital.Models
 
         public void NuevoPaciente()
         {
-            Console.WriteLine("Introduce los datos del Nuevo Medico:");
+            Console.WriteLine("Introduce los datos del Nuevo paciente:");
 
             Console.Write("Nombre: ");
             string nombre = Console.ReadLine();
@@ -75,6 +75,23 @@ namespace Hospital.Models
 
         public void CrearAdministrativo()
         {
+            Console.WriteLine("Introduce los datos del Nuevo personal administrativo:");
+
+            Console.Write("Nombre: ");
+            string nombre = Console.ReadLine();
+
+            Console.Write("Edad: ");
+            int edad = int.Parse(Console.ReadLine());
+
+            string dni = "1091387U";
+
+            string puesto = Console.ReadLine();
+
+            PersonalAdministrativo admin = new PersonalAdministrativo(nombre, edad, dni, puesto);
+            _personas.Add(admin);
+
+            Console.Clear();
+            Console.WriteLine($"{admin.ToString()}\n creado correctamente");
 
         }
 
