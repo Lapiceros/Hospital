@@ -9,11 +9,19 @@ namespace Hospital.Models
     internal class Paciente : Persona
     {
         private string _enfermedad;
-        private Medico _medicoCarteira;
+        private Medico _medico;
 
-        public Paciente(string nombre, int edad, string dni,Medico medicoCarteira): base(nombre, edad, dni)
+        public string Enfermedad { get => _enfermedad; }
+        public Medico Medico { get => _medico;   set => _medico = value; }
+
+        public Paciente(string nombre, int edad, string dni,Medico medico): base(nombre, edad, dni)
         {
-            _medicoCarteira = medicoCarteira;
+            _medico = medico;
+        }
+
+        public override string ToString()
+        {
+            return $"Paciente {base.ToString()} | Medico Asignado: {Medico.Nombre} | Enfermedad: {Enfermedad}";
         }
 
     }
