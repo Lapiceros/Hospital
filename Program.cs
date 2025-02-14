@@ -28,7 +28,7 @@ namespace Hospital
                 Console.WriteLine("5. Listar pacientes de un médico");
                 Console.WriteLine("6. Eliminar a un médico");
                 Console.WriteLine("7. Eliminar paciente de un médico");
-                Console.WriteLine("8. Ver lista de personas del hospital");
+                Console.WriteLine("8. Editar Médico");
                 Console.WriteLine("9. Salir");
                 Console.Write("Seleccione una opción: ");
 
@@ -56,7 +56,7 @@ namespace Hospital
                         hospital.EliminarPaciente();
                         break;
                     case "8":
-                        hospital.ListarPersonas();
+                        hospital.ModificarDatos();
                         break;
                     case "9":
                         return;

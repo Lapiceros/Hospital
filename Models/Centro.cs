@@ -17,12 +17,29 @@ namespace Hospital.Models
         public Centro(string nombre) 
         {
             nombreHospital = nombre;
+
+            Medico medico1 = new Medico("Juan", 34, "Porros");
+            Medico medico2 = new Medico("Anna", 57, "vino tinto");
+            
+
+            Paciente paciente1 = new Paciente("blabla", 13, "Tiktok", medico1);
+            Paciente paciente2 = new Paciente("Patriarcado", 200, "Machismo", medico2);
+            Personas.Add(medico1);
+            Personas.Add(medico2);
+            Medicos.Add(medico1);
+            Medicos.Add(medico2);
+            Personas.Add(paciente2);
+            Personas.Add(paciente1);
+
         }
-        public void ListarPersonas()
+        public void ListarPersonas(Type clase)
         {
             foreach (Persona persona in Personas)
             {
-                Console.WriteLine($"- {persona.Nombre} | Tipo: {persona.GetType().Name}");
+                if (persona.GetType() == clase)
+                {
+                    Console.WriteLine($"{persona.Nombre} | {persona.GetType()}");
+                }
             }
         }
         public void ListarMedicos()
@@ -37,7 +54,6 @@ namespace Hospital.Models
             ListarMedicos();
             Console.Write("Nombre del médico: ");
             string nombre = Console.ReadLine();
-            //Medico medico = Medicos.Find(m => m.Nombre == nombre);
             var medico = Medicos.OfType<Medico>().FirstOrDefault(m => m.Nombre == nombre);
 
             if (medico != null)
@@ -95,7 +111,6 @@ namespace Hospital.Models
                 Paciente paciente = new Paciente(nombrePaciente, edadPaciente, enfermedad, medico);
 
                 Personas.Add(paciente);
-                //medico.AsignarPaciente(paciente);
 
                 Console.Clear();
                 Console.WriteLine($"{paciente}\n creado correctamente");
@@ -178,6 +193,82 @@ namespace Hospital.Models
             {
                 Console.WriteLine("No hay medico disponible");
             }
+
+
+        }
+
+        public void ModificarDatos()
+        {
+            Console.WriteLine("Introduce el tipo de persona que quiere modificar:");
+            Console.WriteLine("1. Administrativo");
+            Console.WriteLine("2. Medico");
+            Console.WriteLine("3. Paciente");
+            Console.WriteLine("4. Salir");
+
+            switch (Console.ReadLine()) 
+            {
+                case "1":
+                    ListarPersonas(typeof(PersonalAdministrativo));
+                    break;
+                case "2":
+                    ListarPersonas(typeof (Medico));
+                    break;
+                case "3":
+                    ListarPersonas(typeof (Paciente));
+                    break;
+                case "4":
+                    return;
+                default:
+                    Console.WriteLine("Opción no válida, intente de nuevo.");
+                    break;
+            }
+
+            Console.WriteLine("Introduce el nombre de la persona a modificar");
+            string nombre = Console.ReadLine();
+            Persona persona = Personas.FirstOrDefault(p => p.Nombre == nombre);
+
+            if (persona != null) 
+            {
+                Console.WriteLine($"{persona}");
+                Console.WriteLine("Ingrese los nuevos datos (dejar en blanco para no modificar)");
+
+                Console.Write("Nombre: ");
+                string nombreNuevo = Console.ReadLine() ;
+                persona.Nombre = nombreNuevo;
+
+                Console.Write("Edad: ");
+                int nuevaEdad = int.Parse(Console.ReadLine());
+                persona.Edad = nuevaEdad;
+
+                if(persona is Medico medico) 
+                {
+                    Console.Write("Introduce nueva especialidad: ");
+                    string nuevaEspecialidad = Console.ReadLine();
+                    if(!string.IsNullOrEmpty(nuevaEspecialidad)) medico.Especialidad = nuevaEspecialidad;
+                }
+                if (persona is Paciente paciente) 
+                {
+                    Console.Write("Introduce nueva enfermedad: ");
+
+                    string nuevaEnfermedad = Console.ReadLine();
+                    if(!string.IsNullOrEmpty(nuevaEnfermedad)) paciente.Enfermedad= nuevaEnfermedad;
+                }
+                if (persona is PersonalAdministrativo administrativo) 
+                {
+                    Console.Write("Introduce nuevo puesto: ");
+
+                    string nuevoPuesto = Console.ReadLine();
+                    if (!string.IsNullOrEmpty(nuevoPuesto)) administrativo.Puesto = nuevoPuesto;
+                    
+
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Persona no encontrada");
+            }
+
 
 
         }
