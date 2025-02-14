@@ -29,16 +29,16 @@ namespace Hospital.Models
         {
             foreach (Medico medico in Medicos)
             {
-                Console.WriteLine($"- {medico.ToString()}");
+                Console.WriteLine($"- {medico}");
             }
         }
         public void ListarPacientes()
         {
             Console.Write("Nombre del médico: ");
-            string nombreM2 = Console.ReadLine();
-            Medico medico2 = Medicos.Find(m => m.Nombre == nombreM2);
-            if (medico2 != null)
-                medico2.ListarPacientes();
+            string nombre = Console.ReadLine();
+            Medico medico = Medicos.Find(m => m.Nombre == nombre);
+            if (medico != null)
+                medico.ListarPacientes();
             else
                 Console.WriteLine("Médico no encontrado.");
         }
@@ -63,7 +63,7 @@ namespace Hospital.Models
             Medicos.Add(medico);
 
             Console.Clear();
-            Console.WriteLine($"{medico.ToString()}\n creado correctamente");
+            Console.WriteLine($"{medico}\n creado correctamente");
             
         }
 
@@ -113,7 +113,7 @@ namespace Hospital.Models
             Personas.Add(admin);
 
             Console.Clear();
-            Console.WriteLine($"{admin.ToString()}\n creado correctamente");
+            Console.WriteLine($"{admin}\n creado correctamente");
 
         }
 
