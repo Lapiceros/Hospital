@@ -32,13 +32,18 @@ namespace Hospital.Models
                 Console.WriteLine($"- {medico}");
             }
         }
-        public void ListarPacientes()
+        public void ListarPacientesMedico()
         {
+            ListarMedicos();
             Console.Write("Nombre del médico: ");
             string nombre = Console.ReadLine();
-            Medico medico = Medicos.Find(m => m.Nombre == nombre);
+            //Medico medico = Medicos.Find(m => m.Nombre == nombre);
+            var medico = Medicos.OfType<Medico>().FirstOrDefault(m => m.Nombre == nombre);
+
             if (medico != null)
+            {
                 medico.ListarPacientes();
+            }
             else
                 Console.WriteLine("Médico no encontrado.");
         }
@@ -69,8 +74,11 @@ namespace Hospital.Models
 
         public void NuevoPaciente()
         {
+            ListarMedicos();
+
             Console.Write("Nombre del médico asignado: ");
             string nombre = Console.ReadLine();
+
             Medico medico = Medicos.Find(m => m.Nombre == nombre);
 
             if (medico != null)
@@ -87,7 +95,7 @@ namespace Hospital.Models
                 Paciente paciente = new Paciente(nombrePaciente, edadPaciente, enfermedad, medico);
 
                 Personas.Add(paciente);
-                medico.AsignarPaciente(paciente);
+                //medico.AsignarPaciente(paciente);
 
                 Console.Clear();
                 Console.WriteLine($"{paciente}\n creado correctamente");
@@ -119,6 +127,7 @@ namespace Hospital.Models
 
         public void EliminarMedico() 
         {
+            ListarMedicos();
             Console.WriteLine("Ingrese el nombre del medico");
             string nombre = Console.ReadLine();
 
@@ -143,8 +152,11 @@ namespace Hospital.Models
             Medico medico = Medicos.Find(m => m.Nombre == nombreMedico);
             if (medico != null)
             {
+                medico.ListarPacientes();
+
                 Console.Write("Nombre del paciente a eliminar: ");
                 string nombrePaciente = Console.ReadLine();
+
                 medico.EliminarPaciente(nombrePaciente);
             }
             else
@@ -155,10 +167,18 @@ namespace Hospital.Models
         {
             Medico medicoReemplazo = Medicos.FirstOrDefault(m => m != medico && m.Especialidad == medico.Especialidad);
 
-            foreach (var paciente in medico.Pacientes.ToList())
-            {
-                paciente.Medico = medicoReemplazo;
+            if(medicoReemplazo != null) 
+            { 
+                foreach (var paciente in medico.Pacientes.ToList())
+                {
+                    paciente.Medico = medicoReemplazo;
+                }
             }
+            else
+            {
+                Console.WriteLine("No hay medico disponible");
+            }
+
 
         }
     }

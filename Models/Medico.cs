@@ -28,10 +28,18 @@ namespace Hospital.Models
 
         public void ListarPacientes()
         {
-            foreach (Paciente item in Pacientes)
+             if(Pacientes.Count == 0)
             {
-                Console.WriteLine($"-{item.Nombre} |  Diagnostico: {item.Enfermedad}");
-            };
+                Console.WriteLine("No hay pacientes asignados");
+            }
+            else
+            {
+                foreach (Paciente item in Pacientes)
+                {
+                    Console.WriteLine($"-{item.Nombre} |  Diagnostico: {item.Enfermedad}");
+                }
+            }
+            
         }
 
         public override string ToString()

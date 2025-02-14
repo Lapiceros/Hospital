@@ -19,6 +19,7 @@ namespace Hospital
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("\n--- Menú ---");
                 Console.WriteLine("1. Agregar médico");
                 Console.WriteLine("2. Nuevo paciente");
@@ -36,21 +37,17 @@ namespace Hospital
                     case "1":
                         hospital.CrearMedico();
                         break;
-
                     case "2":
                         hospital.NuevoPaciente();
                         break;
-
                     case "3":
                         hospital.CrearAdministrativo();
                         break;
-
                     case "4":
                         hospital.ListarMedicos();
                         break;
-
                     case "5":
-                        hospital.ListarPacientes();
+                        hospital.ListarPacientesMedico();
                         break;
                     case "6":
                         hospital.EliminarMedico();
@@ -58,18 +55,16 @@ namespace Hospital
                     case "7":
                         hospital.EliminarPaciente();
                         break;
-
                     case "8":
                         hospital.ListarPersonas();
                         break;
-
                     case "9":
                         return;
-
                     default:
                         Console.WriteLine("Opción no válida, intente de nuevo.");
                         break;
                 }
+                Console.ReadKey();
             }
         }
     }

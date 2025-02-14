@@ -12,7 +12,7 @@ namespace Hospital.Models
         private Medico _medico;
 
         public string Enfermedad { get => _enfermedad; }
-        public Medico Medico 
+        public Medico Medico
         { 
             get => _medico; 
             set 
@@ -25,7 +25,7 @@ namespace Hospital.Models
         public Paciente(string nombre, int edad,string enfermedad, Medico medico): base(nombre, edad)
         {
             _enfermedad = enfermedad;
-            _medico = medico;
+            Medico = medico;
         }
 
         public override string ToString()
