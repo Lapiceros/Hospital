@@ -12,6 +12,7 @@ namespace Hospital.Models
         public string nombreHospital { get; set; }
         public List<Persona> Personas = new List<Persona>();
         public List<Medico> Medicos = new List<Medico>();
+        public List<Cita> CitasAgendadas = new List<Cita>();
 
 
         public Centro(string nombre) 
@@ -259,18 +260,36 @@ namespace Hospital.Models
 
                     string nuevoPuesto = Console.ReadLine();
                     if (!string.IsNullOrEmpty(nuevoPuesto)) administrativo.Puesto = nuevoPuesto;
-                    
-
                 }
+            }
+            else
+                Console.WriteLine("Persona no encontrada");
 
+        }
+
+        public void CrearCita()
+        {
+            ListarMedicos();
+            Console.WriteLine("Introduce el nombre del medico para agendar una cita");
+            string nombreMedico = Console.ReadLine();
+
+            Medico medico = Medicos.FirstOrDefault(m => m.Nombre == nombreMedico);
+            Paciente paciente = (Paciente)Personas.FirstOrDefault(p => p is Paciente && p.Nombre == SolicitarEntradaTexto("Nombre del paciente: "));
+            if (medico != null && paciente != null)
+            { 
+                Console.WriteLine("Fecha y hora de la cita (yyyy-MM-dd HH:mm): ");
+                DateTime fechaHora = DateTime.Parse(Console.ReadLine());
+
+                Cita nuevaCita = new Cita(medico, paciente, fechaHora);
+                CitasAgendadas.Add(nuevaCita);
+                paciente.HistorialMedico.AgregarCita(nuevaCita);
+                Console.WriteLine("Cita creada correctamente.");
             }
             else
             {
-                Console.WriteLine("Persona no encontrada");
+                Console.WriteLine("Médico o paciente no encontrado.");
             }
-
-
-
         }
+
     }
 }

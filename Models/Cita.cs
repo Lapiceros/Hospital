@@ -8,9 +8,20 @@ namespace Hospital.Models
 {
     internal class Cita
     {
-        
+        public Medico Medico { get; set; }
+        public Paciente Paciente { get; set; }
+        public DateTime FechaHora { get; set; }
 
-        public void AgendarCita() { }
-        public void ModificarCita() { }
+        public Cita(Medico medico, Paciente paciente, DateTime fechaHora)
+        {
+            Medico = medico;
+            Paciente = paciente;
+            FechaHora = fechaHora;
+        }
+
+        public override string ToString()
+        {
+            return $"Cita: {FechaHora} - Dr/a {Medico.Nombre} con {Paciente.Nombre}";
+        }
     }
 }

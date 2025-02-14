@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Models\Centro.cs" />
     <Compile Include="Models\Cita.cs" />
+    <Compile Include="Models\HistorialMedico.cs" />
     <Compile Include="Models\Medico.cs" />
     <Compile Include="Models\Paciente.cs" />
     <Compile Include="Models\Persona.cs" />

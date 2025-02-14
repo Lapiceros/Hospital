@@ -10,7 +10,6 @@ namespace Hospital.Models
     {
         private string _enfermedad;
         private Medico _medico;
-
         public string Enfermedad { get => _enfermedad; set => _enfermedad = value; }
         public Medico Medico
         { 
